@@ -1,0 +1,358 @@
+#: import C kivy.utils.get_color_from_hex
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<Widget>:
+    font_name: "DroidSansFallback.ttf"
+
+
+<TextInput>:
+    multiline:False
+    text: ""
+    font_size: '20sp'
+    size_hint_x: 0.7
+    size_hint_y: 0.3
+    write_tab: False
+#    height: 80
+
+
+<ScreenManagement>:
+    MainScreen:
+        id: main_screen
+        name: 'main'
+
+    PersonalInfoScreen:
+        id: info_screen
+        name: 'info'
+
+    QuestionScreen:
+        id: question_screen
+        name: 'question'
+
+    FinalScreen:
+        id: final_screen
+        name: 'final'
+
+
+
+
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'  # 垂直方向布局
+#        size_hint_y: None  # 手动设置高度
+        height: self.minimum_height  # 根据内容自动调整高度
+        padding: [20, 40, 20, 20]  # 上、右、下、左
+        spacing: 20
+        # Logo图片
+        Image:
+            id: logo
+            source: 'icon.png'
+            height: '128dp'  # 设置高度
+            allow_stretch: True  # 允许图片拉伸以适应大小
+            keep_ratio: True  # 保持图片比例
+            halign: 'center'  # 水平居中
+
+        # 空出一些空间
+        BoxLayout:
+            size_hint_y: 0.2  # 占总高度的20%
+
+        # 应用标题
+        Label:
+            text: 'Questionnaire App'
+            font_size: '36sp'  # 字体大小
+            color: (1, 1, 1, 1)  # 字体颜色，白色
+            halign: 'center'  # 水平居中
+
+        BoxLayout:
+            size_hint_y: None  # 手动设置高度
+            height: '100dp'  # 设置高度
+            orientation: 'horizontal'  # 水平布局
+            padding: '10dp'  # 内边距
+            spacing: 20
+
+            # 退出按钮
+            Button:
+                text: '结束'
+                text_color: (1, 1, 1, 1)  # 文字颜色
+                font_size: '24sp'  # 字体大小
+                background_color: (0, 0.5, 0.8, 1)  # 背景颜色
+                on_release:
+                    app.close_application()
+
+            # 开始按钮
+            Button:
+                text: '开始'
+                text_color: (1, 1, 1, 1)  # 文字颜色
+                font_size: '24sp'  # 字体大小
+                background_color: (1, 0.2, 0.2, 1)  # 背景颜色
+                on_release:
+                    root.manager.current = 'info'
+
+
+
+<PersonalInfoScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '30dp'
+        spacing: 10
+
+        # 窗口上方留出一小片空白区域
+        BoxLayout:
+            size_hint_y: 0.10  # 占总高度的10%
+
+        Label:
+            text: '请填写以下信息：'
+            font_size: '24sp'  # 字体大小
+            size_hint: (1, 0.1)
+            valign: 'top'
+
+        # 个人信息输入区域
+        GridLayout:
+            cols: 2
+            rows: 4
+            size_hint_y: 0.6
+            padding: '10dp'
+#            row_force_default: True
+#            row_default_height: 60
+            spacing: 60
+
+            # 姓名
+            Label:
+                text: "姓名（拼音）:"
+                size_hint_x: 0.3
+                font_size: '20sp'
+            TextInput:
+                id: name_input
+                on_text_validate: age_input.focus = True
+#                on_focus: app.changeKeyboard(self, 'alphanumeric')
+
+            # 性别
+            Label:
+                text: "年龄:"
+                size_hint_x: 0.3
+                font_size: '20sp'
+            TextInput:
+                id: age_input
+                on_text_validate: height_input.focus = True
+#                on_focus: app.changeKeyboard(self, 'numeric')
+
+            # 身高
+            Label:
+                text: "身高(cm):"
+                size_hint_x: 0.3
+                font_size: '20sp'
+            TextInput:
+                id: height_input
+                on_text_validate: weight_input.focus = True
+#                on_focus: app.changeKeyboard(self, 'numeric')
+
+            # 体重
+            Label:
+                text: "体重(kg):"
+                size_hint_x: 0.3
+                font_size: '20sp'
+            TextInput:
+                id: weight_input
+                on_text_validate: root.save_personal_information()
+#                on_focus: app.changeKeyboard(self, 'numeric')
+
+        Label:
+            text: ""
+            size_hint_y: 0.01
+
+        # 按钮区域
+        BoxLayout:
+            orientation: 'horizontal'
+#            padding: '10dp'
+            size_hint: (1, 0.19)
+#            height: 50
+            spacing: 10
+
+            Button:
+                size_hint_y: 0.4
+                text: '取消'
+                on_release:
+                    root.manager.current = 'main'
+
+            Button:
+                size_hint_y: 0.4
+                text: '确定'
+                on_release:
+                    root.save_personal_information()
+
+# 自定义的 CheckBox 样式
+<CheckBox>:
+    color: .9, .8, .7, 1
+    background_normal: ''
+    background_color: 48/255. , 48/255. , 48/255.,1
+    canvas.before:
+        Color:
+            rgba: 200/255. , 100/255. , 70/255., 1
+
+        Line:
+            dash_length: 10
+            dash_offset: 10
+            points: [self.x+self.width/4, self.y+self.height/8, self.right-self.width/4, self.y+self.height/8, self.right-self.width/4, self.top-self.height/8, self.x+self.width/4, self.top-self.height/8, self.x+self.width/4, self.y+self.height/8]
+            width:1
+
+
+
+<QuestionScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
+
+        Label:
+            id: progress_label
+            text: root.progress_string_text
+            size_hint: (1, 0.1)
+            halign: 'center'
+
+        Label:
+            id: question_label
+            font_size: '24sp'
+            text: root.question_string_text
+            size_hint: (1, 0.3)
+            valign: 'middle'
+            halign: 'center'
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 10
+            size_hint: (1, 0.5)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                CheckBox:
+                    id: check_0
+                    group: 'answers'
+                    name: "0"
+                    size: '48dp', '48dp'
+                Label:
+                    id: option_0
+                    font_size: '24sp'
+                    text: root.option_0_string_text
+
+                    halign: 'left'
+                    valign: 'middle'
+                    size_hint: (1.0, 1.0)
+                    text_size: self.size
+                    on_touch_down: root.select_option(0, self, args)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                CheckBox:
+                    id: check_1
+                    group: 'answers'
+                    name: "1"
+                    size: '48dp', '48dp'
+                Label:
+                    id: option_1
+                    text: root.option_1_string_text
+                    font_size: '24sp'
+                    halign: 'left'
+                    valign: 'middle'
+                    size_hint: (1.0, 1.0)
+                    text_size: self.size
+                    on_touch_down: root.select_option(1, self, args)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                CheckBox:
+                    id: check_2
+                    group: 'answers'
+                    name: "2"
+                    size: '48dp', '48dp'
+                Label:
+                    id: option_2
+                    text: root.option_2_string_text
+                    font_size: '24sp'
+                    halign: 'left'
+                    valign: 'middle'
+                    size_hint: (1.0, 1.0)
+                    text_size: self.size
+                    on_touch_down: root.select_option(2, self, args)
+
+
+            BoxLayout:
+                orientation: 'horizontal'
+                CheckBox:
+                    id: check_3
+                    group: 'answers'
+                    name: "3"
+                    size: '48dp', '48dp'
+                Label:
+                    id: option_3
+                    text: root.option_3_string_text
+                    font_size: '24sp'
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint: (1.0, 1.0)
+                    on_touch_down: root.select_option(3, self, args)
+
+        Label:
+            id: blank
+            text: ""
+            size_hint: (1, 0.02)
+            halign: 'center'
+
+        BoxLayout:
+            size_hint: (1, 0.08)
+            spacing: 20
+
+            Button:
+                id: previous
+                text: '<== 上一个'
+                on_release: root.previous_question()
+
+            Button:
+                id: next
+                text: '下一个 ==>'
+                on_release: root.next_question()
+
+<Toast>:
+    id: copied_toast
+    auto_dismiss: False
+    size_hint: .7, .05
+    pos_hint: {'y': .15}
+    background: 'toast_bg.png'
+    background_color: 0,0,0,0
+    Label:
+        text: root.message
+        color: 1,1,1,.8
+        font_size: '16sp'
+
+<FinalScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [20, 40, 20, 20]
+        spacing: 20
+
+        Label:
+            text: '焦虑评分'
+            font_size: '28sp'
+            size_hint: (1, 0.1)
+            halign: 'center'
+
+        Label:
+            id: score_label
+            text: str(root.score)
+            font_size: '50sp'
+            size_hint: (1, 0.4)
+            halign: 'center'
+            valign: 'middle'
+
+        BoxLayout:
+            size_hint: (1, 0.1)
+            spacing: 20
+
+            Button:
+                text: '保存'
+                font_size: '20sp'
+                on_release: root.manager.ids.final_screen.save_score()
+
+            Button:
+                text: '返回'
+                font_size: '20sp'
+                on_release: root.manager.ids.final_screen.return_to_main()
