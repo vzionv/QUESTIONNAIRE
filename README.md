@@ -77,3 +77,17 @@ buildozer -v android debug
 
 编译成功后，会在当前目录下创建一个新的**bin**目录，并在该目录下生成一个apk文件
 
+------
+
+## Acknowledgement
+
+[Kivy](https://github.com/kivy/kivy)
+
+[KivyMD](https://github.com/kivymd/KivyMD)
+
+[kivy-toaster](https://github.com/knappador/kivy-toaster)
+
+https://blog.csdn.net/qq_38872258/article/details/117458881
+
+
+
