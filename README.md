@@ -7,7 +7,7 @@
 1. Clone仓库，建立虚拟环境（过程省略），安装依赖：
 
     ```
-    git clone https://github.com/vzionv/Interception.git
+    git clone https://github.com/vzionv/QUESTIONNAIRE.git
     cd QUESTIONNAIRE
     pip install -r requirements.txt
     ```
